@@ -33,9 +33,11 @@ void BinaryFile::read(std::filesystem::path file_path)
         // 读取字节
         std_ifstream.seekg(0, std::ios::end);
         std::size_t file_bytes = static_cast<std::size_t>(std_ifstream.tellg());
-        bytes.resize(file_bytes);
+        bytes.resize(file_bytes + 1);
+        std_ifstream.seekg(0, std::ios::beg);
         for (std::size_t byte_idx = 0; byte_idx < file_bytes; ++byte_idx)
             std_ifstream.read((char*)(&(bytes[byte_idx])), sizeof(std::uint8_t));
+        bytes[file_bytes] = 0; // 补充一个0以便使用卷积码
         std_ifstream.close();
         // 转换为二进制以便编码
         convertBytesToBits(bytes, bits);
@@ -58,7 +60,7 @@ void BinaryFile::write(std::filesystem::path file_path)
 
     if (std_ofstream)
     {
-        std::size_t file_bytes = bytes.size();
+        std::size_t file_bytes = bytes.size() - 1; // 去掉末尾补的0
         for (std::size_t byte_idx = 0; byte_idx < file_bytes; ++byte_idx)
             std_ofstream.write((char*)(&(bytes[byte_idx])), sizeof(std::uint8_t));
         std_ofstream.close();
@@ -258,11 +260,12 @@ void BinaryFile::convertBytesToBits(const std::vector<int> &bytes, std::vector<i
     bits.resize(nbytes << 3);
     for (std::size_t byte_idx = 0; byte_idx < nbytes; ++byte_idx)
     {
+        std::size_t start_bit_idx = byte_idx << 3;
         std::uint8_t byte = bytes[byte_idx];
         for (int i = 7; i >= 0; --i)
         {
             bool bit = (byte & (1 << i)) != 0;
-            bits[byte_idx + (7 - i)] = static_cast<int>(bit);
+            bits[start_bit_idx + (7 - i)] = static_cast<int>(bit);
         }
     }
 }

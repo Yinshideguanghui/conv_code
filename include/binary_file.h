@@ -17,6 +17,7 @@ namespace ConvCode75
 class BinaryFile
 {
 public:
+    BinaryFile() {}
     BinaryFile(std::size_t file_length);
     BinaryFile(std::filesystem::path file_path);
 
@@ -28,7 +29,7 @@ public:
     void binaryCodewordDisplay() const;
     void hexCodewordDisplay() const;
 
-protected:
+public:
     void randomInitialize(std::size_t file_length);
     void convertBitsToBytes(const std::vector<int> &bits, std::vector<int> &bytes);
     void convertBytesToBits(const std::vector<int> &bytes, std::vector<int> &bits);
