@@ -34,17 +34,17 @@ void ConvolutionalCode_7_5::decode(const std::vector<int> &codeword, std::vector
         re_codeword_10[i] = binary_to_decimal(codeword[i * 2], codeword[i * 2 + 1]);
     }
     //*初始化记录表 state_num = 4
-    int **min_path_to_state = new int *[4]; // 到达某状态的最短路径长度记录
+    std::vector<std::vector<int>> min_path_to_state(4); // 到达某状态的最短路径长度记录
     for (int i = 0; i < 4; i++)
     {
-        min_path_to_state[i] = new int[2]; // 第一列保存上一层结果，第二列保存当前层计算结果
+        min_path_to_state[i].resize(2); // 第一列保存上一层结果，第二列保存当前层计算结果
         for (int j = 0; j < 2; j++)
             min_path_to_state[i][j] = 0; // 初始化
     }
-    int **path_reserved = new int *[4]; // 到达某状态的保留路径表
+    std::vector<std::vector<int>> path_reserved(4); // 到达某状态的保留路径表
     for (int i = 0; i < 4; i++)
     {
-        path_reserved[i] = new int[file_length];
+        path_reserved[i].resize(file_length);
         for (int j = 0; j < file_length; j++)
             path_reserved[i][j] = 0; // 初始化
     }
@@ -178,19 +178,19 @@ void ConvolutionalCode_7_5::decode(const std::vector<int> &codeword, std::vector
         path_reserved[0][file_length - 1] = 2;
     }
     //*回溯路径，获得译码结果
-    int *temp_state = NULL;
+    std::pair<int, int> temp_state;
     int current_path_index = path_reserved[0][file_length - 1];
     for (int i = file_length - 1; i > 0; i--)
     {
         temp_state = path_node(current_path_index);                // 找到路径对应始末状态
-        decoded[i] = state_table[temp_state[0]][temp_state[1]][0]; // 找到对应输入比特
-        current_path_index = path_reserved[temp_state[0]][i - 1];
+        decoded[i] = state_table[temp_state.first][temp_state.second][0]; // 找到对应输入比特
+        current_path_index = path_reserved[temp_state.first][i - 1];
     }
     //**最后一层没有上一层，故单独处理
     temp_state = path_node(current_path_index);                // 找到路径对应始末状态
-    decoded[0] = state_table[temp_state[0]][temp_state[1]][0]; // 找到对应输入比特
+    decoded[0] = state_table[temp_state.first][temp_state.second][0]; // 找到对应输入比特
     //*释放内存
-    delete[] re_codeword_10, min_path_to_state, path_reserved, temp_state;
+    delete[] re_codeword_10;
 }
 
 int ConvolutionalCode_7_5::binary_to_decimal(int a, int b)
@@ -268,30 +268,30 @@ int ConvolutionalCode_7_5::num_different_bit(int a, int b)
     return 0;
 }
 
-int *ConvolutionalCode_7_5::path_node(int path_index)
+std::pair<int, int> ConvolutionalCode_7_5::path_node(int path_index)
 {
     // 输入通路编号，返回起始和到达状态（适用于(7,5)_8的状态图）
-    int *result = new int[2];
-    result[1] = (path_index - 1) / 2; // 到达状态
-    int a = path_index % 2;           // 规律：此处定义下，可分奇偶处理
-    switch (result[1])
+    std::pair<int, int> result;
+    result.second = (path_index - 1) / 2; // 到达状态
+    int a = path_index % 2;               // 规律：此处定义下，可分奇偶处理
+    switch (result.second)
     {
     case 0:
     case 2:
     {
         if (a == 0)
-            result[0] = 1;
+            result.first = 1;
         else
-            result[0] = 0;
+            result.first = 0;
     }
     break;
     case 1:
     case 3:
     {
         if (a == 0)
-            result[0] = 3;
+            result.first = 3;
         else
-            result[0] = 2;
+            result.first = 2;
     }
     break;
     default:

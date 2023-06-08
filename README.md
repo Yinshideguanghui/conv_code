@@ -22,28 +22,28 @@
 ├── CMakeLists.txt
 ├── data                         # 目录：测试数据及输出 
 │   ├── example0.txt             # 文件：测试数据0，字母表和数字
-│   ├── example1.jpg             # 文件：测试数据2，一段较长的中文文本
+│   ├── example1.jpg             # 文件：测试数据1，一幅图片
 │   ├── example2.txt             # 文件：测试数据2，一段较长的中文文本
 │   ├── recovered_example0.txt   # 文件：测试0结果，运行时自动生成
-│   ├── recovered_example1.png   # 文件：测试1结果，运行时自动生成
+│   ├── recovered_example1.jpg   # 文件：测试1结果，运行时自动生成
 │   └── recovered_example2.txt   # 文件：测试2结果，运行时自动生成
-├── examples
-│   ├── burst_error.cpp
-│   ├── spread_error.cpp
-│   └── storage_file.cpp
-├── exec
-│   ├── burst_error
-│   ├── spread_error
-│   └── storage_file
-├── include
-│   ├── binary_file.h
-│   └── conv_code.h
-├── libs
-│   └── libconvolutional_erasure_code.so
+├── examples                  # 目录：可执行测试程序的源码
+│   ├── burst_error.cpp       # 文件：集中损坏测试（源码）
+│   ├── spread_error.cpp      # 文件：分散损坏测试（源码）
+│   └── storage_file.cpp      # 文件：存储文件读写与损坏测试（源码）
+├── exec                   # 目录：可执行测试程序
+│   ├── burst_error        # 文件：集中损坏测试
+│   ├── spread_error       # 文件：分散损坏测试
+│   └── storage_file       # 文件：存储文件读写与损坏测试
+├── include             # 目录：存放声明的头文件
+│   ├── binary_file.h   # 文件：声明BinaryFile类（源码）
+│   └── conv_code.h     # 文件：声明ConvolutionalCode_7_5类（源码）
+├── libs                                  # 目录：存放生成的动态库
+│   └── libconvolutional_erasure_code.so  # 文件：卷积码和I/O动态库
 ├── README.md
-└── src
-    ├── binary_file.cpp
-    └── conv_code.cpp
+└── src                     # 目录：存放实现的源码
+    ├── binary_file.cpp     # 文件：实现BinaryFile类（源码）
+    └── conv_code.cpp       # 文件：实现ConvolutionalCode_7_5类（源码）
 
 ```
 
@@ -78,8 +78,7 @@ cd conv_code/exec/
 ## I/O示例
 1. 分散损坏实验
 ```
-
-
+/conv_code$ ./exec/spread_error 1000 8000 64
 ```
 
 2. 集中损坏实验

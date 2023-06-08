@@ -23,11 +23,13 @@ int main(int argc, char **argv)
     {
         num_files = std::stoi(argv[1]);
         file_length = std::stoul(argv[2]);
+        codeword_length = file_length * 2;
     }
     else if (argc == 4)
     {
         num_files = std::stoi(argv[1]);
         file_length = std::stoul(argv[2]);
+        codeword_length = file_length * 2;
         default_max_n_broken_bits = std::stoi(argv[3]);
     }
     else

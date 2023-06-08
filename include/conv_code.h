@@ -16,7 +16,7 @@ public:
 protected:
     static int binary_to_decimal(int a, int b);
     static int num_different_bit(int a, int b);
-    static int* path_node(int path_index);
+    static std::pair<int, int> path_node(int path_index);
 
 protected:
     static inline int state_table[4][4][2] = {

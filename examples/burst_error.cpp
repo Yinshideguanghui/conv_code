@@ -22,11 +22,13 @@ int main(int argc, char** argv)
     {
         num_files = std::stoi(argv[2]);
         file_length = std::stoul(argv[3]);
+        codeword_length = file_length * 2;
     }
     else if (argc == 4)
     {
         num_files = std::stoi(argv[2]);
         file_length = std::stoul(argv[3]);
+        codeword_length = file_length * 2;
         default_max_num_block_bytes = std::stoi(argv[4]);
     }
     else
