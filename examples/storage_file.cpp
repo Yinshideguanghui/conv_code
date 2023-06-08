@@ -14,6 +14,7 @@ int main(int argc, char** argv)
     std::filesystem::path result_path;
     broken_t broken_type = broken_t::SPREAD;
     int num_broken_bits = 8;
+    bool display = false;
     if (argc == 1)
     {
         file_path = std::filesystem::path(argv[0]).parent_path() / "../data/example1.png";
@@ -41,6 +42,17 @@ int main(int argc, char** argv)
         broken_type = std::stoi(argv[2]) ? broken_t::BURST : broken_t::SPREAD;
         num_broken_bits = std::stoi(argv[3]);
     }
+    else if (argc == 5)
+    {
+        file_path = argv[1];
+        if (file_path.is_relative())
+            file_path = std::filesystem::path(argv[0]).parent_path() / file_path;
+
+        broken_type = std::stoi(argv[2]) ? broken_t::BURST : broken_t::SPREAD;
+        num_broken_bits = std::stoi(argv[3]);
+
+        display = std::stoi(argv[4]);
+    }
     else
         return -1;
 
@@ -52,8 +64,12 @@ int main(int argc, char** argv)
 
     // 读取文件并显示
     ConvCode75::BinaryFile file1(file_path);
-    // file1.hexDisplay();
-    // file1.hexCodewordDisplay();
+    if (display)
+    {
+        file1.hexDisplay();
+        file1.hexCodewordDisplay();
+    }
+
 
     // 产生损坏并显示
     ConvCode75::BinaryFile file2;
@@ -94,14 +110,20 @@ int main(int argc, char** argv)
     else
         return -1;
     file2.convertBitsToBytes(file2.codeword, file2.codeword_bytes);
-    // file2.hexCodewordDisplay();
+    if (display)
+    {
+        file2.hexCodewordDisplay();
+    }
 
     // 尝试译码恢复
     ConvCode75::ConvolutionalCode_7_5::decode(file2.codeword, file2.bits);
 
     // 显示译码恢复结果
     file2.convertBitsToBytes(file2.bits, file2.bytes);
-    // file2.hexDisplay();
+    if (display)
+    {
+        file2.hexDisplay();
+    }
 
     // 写入恢复后文件
     file2.write(result_path);
