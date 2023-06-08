@@ -88,9 +88,9 @@ int main(int argc, char **argv)
         }
 
         // 显示结果
-        std::cout << "当前分散损坏比特数 = " << n_broken_bits << "/" << codeword_length
-                << "bits, 恢复后总误码率 = " << static_cast<double>(num_bit_error) / (file_length * num_files)
-                << ", 无法恢复的文件数 = " << num_file_error << "/" << num_files
+        std::cout << "当前分散损坏比特数 " << n_broken_bits << "/" << codeword_length
+                << "bits, 恢复后总误码率 " << static_cast<double>(num_bit_error) / (file_length * num_files)
+                << ", 无法恢复的文件数 " << num_file_error << "/" << num_files
                 << std::endl;
     }
 

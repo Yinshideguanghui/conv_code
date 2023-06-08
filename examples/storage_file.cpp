@@ -31,7 +31,7 @@ int main(int argc, char** argv)
         if (file_path.is_relative())
             file_path = std::filesystem::path(argv[0]).parent_path() / file_path;
 
-        broken_type = std::stoi(argv[3]) ? broken_t::BURST : broken_t::SPREAD;
+        broken_type = std::stoi(argv[2]) ? broken_t::BURST : broken_t::SPREAD;
     }
     else if (argc == 4)
     {

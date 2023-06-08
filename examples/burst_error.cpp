@@ -16,20 +16,20 @@ int main(int argc, char** argv)
         ;
     else if (argc == 2)
     {
-        num_files = std::stoi(argv[2]);
+        num_files = std::stoi(argv[1]);
     }
     else if (argc == 3)
     {
-        num_files = std::stoi(argv[2]);
-        file_length = std::stoul(argv[3]);
+        num_files = std::stoi(argv[1]);
+        file_length = std::stoul(argv[2]);
         codeword_length = file_length * 2;
     }
     else if (argc == 4)
     {
-        num_files = std::stoi(argv[2]);
-        file_length = std::stoul(argv[3]);
+        num_files = std::stoi(argv[1]);
+        file_length = std::stoul(argv[2]);
         codeword_length = file_length * 2;
-        default_max_num_block_bytes = std::stoi(argv[4]);
+        default_max_num_block_bytes = std::stoi(argv[3]);
     }
     else
         return -1;
@@ -84,9 +84,9 @@ int main(int argc, char** argv)
         }
 
         // 显示结果
-        std::cout << "当前集中损坏块大小 = " << block_length << "bits/" << codeword_length
-                << "bits, 恢复后总误码率 = " << static_cast<double>(num_bit_error) / (file_length * num_files)
-                << ", 无法恢复的文件数 = " << num_file_error << "/" << num_files
+        std::cout << "当前集中损坏块大小 " << block_length << "bits/" << codeword_length
+                << "bits, 恢复后总误码率 " << static_cast<double>(num_bit_error) / (file_length * num_files)
+                << ", 无法恢复的文件数 " << num_file_error << "/" << num_files
                 << std::endl;
     }
 
